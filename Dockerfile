@@ -2,13 +2,13 @@ FROM gophish/gophish:latest
 
 USER root
 
-# Installer Python 3
-RUN apk add --no-cache python3
+# Mettre à jour et installer Python 3 pour les images basées sur Debian
+RUN apt-get update && apt-get install -y python3
 
-# Copier le script de relais dans le conteneur
+# Copier le script de relais
 COPY relay.py /app/relay.py
 
-# Créer un script de lancement interne et le rendre exécutable
+# Créer le script de démarrage interne
 RUN echo '#!/bin/sh' > /app/entrypoint.sh && \
     echo 'python3 /app/relay.py &' >> /app/entrypoint.sh && \
     echo './gophish' >> /app/entrypoint.sh && \
