@@ -1,5 +1,6 @@
 FROM gophish/gophish:latest
 WORKDIR /opt/gophish
-COPY config.json /opt/gophish/config.json
 EXPOSE 8080 80
+ENV GOPHISH_ADMIN_LISTEN="0.0.0.0:8080"
+ENV GOPHISH_PHISH_LISTEN="0.0.0.0:80"
 CMD ["./gophish"]
