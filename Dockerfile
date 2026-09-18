@@ -2,11 +2,20 @@ FROM gophish/gophish:latest
 
 USER root
 
-# Configuration directe de Gophish sur le port 8080 sans TLS
-RUN echo '{"admin_server":{"listen_url":"0.0.0.0:8080","use_tls":false,"cert_path":"gophish_admin.crt","key_path":"gophish_admin.key","trusted_origins":["gophish-railway-production-2e49.up.railway.app"]},"phish_server":{"listen_url":"0.0.0.0:8000","use_tls":false,"cert_path":"example.crt","key_path":"example.key"},"db_name":"sqlite3","db_path":"gophish.db","migrations_prefix":"db/db_","logging":{"filename":"","level":""}}' > /opt/gophish/config.json
+# Installer Python 3
+RUN apk add --no-cache python3
+
+# Copier le script de relais dans le conteneur
+COPY relay.py /app/relay.py
+
+# Créer un script de lancement interne et le rendre exécutable
+RUN echo '#!/bin/sh' > /app/entrypoint.sh && \
+    echo 'python3 /app/relay.py &' >> /app/entrypoint.sh && \
+    echo './gophish' >> /app/entrypoint.sh && \
+    chmod +x /app/entrypoint.sh
+
+WORKDIR /app
 
 EXPOSE 8080
 
-RUN apk add --no-cache python3
-
-ENTRYPOINT ["./start.sh"]
+ENTRYPOINT ["/app/entrypoint.sh"]
