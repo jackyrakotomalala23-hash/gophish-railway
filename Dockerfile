@@ -7,6 +7,6 @@ RUN echo '{"admin_server":{"listen_url":"0.0.0.0:8080","use_tls":false,"cert_pat
 
 EXPOSE 8080
 
-RUN chmod +x start.sh
+RUN apk add --no-cache python3
 
-ENTRYPOINT ["./gophish"]
+ENTRYPOINT ["./start.sh"]
