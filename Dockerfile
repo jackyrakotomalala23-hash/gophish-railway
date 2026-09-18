@@ -1,3 +1,5 @@
 FROM gophish/gophish:latest
-EXPOSE 8080 80
+WORKDIR /opt/gophish
+COPY config.json /opt/gophish/config.json
+EXPOSE 3333 80
 CMD ["./gophish"]
