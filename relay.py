@@ -4,7 +4,7 @@ import urllib.request
 import re
 import os
 
-BREVO_API_KEY = os.environ.get("BREVO_API_KEY", "VOTRE_CLE_API_XKEYSIB")
+BREVO_API_KEY = os.environ.get("BREVO_API_KEY", "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")
 
 def parse_smtp_payload(raw_data):
     data_str = raw_data.decode('utf-8', errors='ignore')
