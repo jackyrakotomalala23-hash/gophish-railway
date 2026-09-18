@@ -5,16 +5,17 @@ USER root
 # Installation de Nginx
 RUN apt-get update && apt-get install -y nginx
 
-# Configuration de Gophish en HTTP local
-RUN sed -i 's/"use_tls": true/"use_tls": false/g' /opt/gophish/config.json
-
-# Configuration Nginx pour le port 8080 et la réécriture du Referer
+# Configuration Nginx HTTPS vers 127.0.0.1:3333
 RUN echo 'server { \
     listen 8080; \
     location / { \
-        proxy_pass http://127.0.0.1:3333; \
+        proxy_pass https://127.0.0.1:3333; \
+        proxy_ssl_verify off; \
         proxy_set_header Host $host; \
-        proxy_set_header Referer "http://127.0.0.1:3333"; \
+        proxy_set_header Referer "https://127.0.0.1:3333"; \
+        proxy_set_header X-Real-IP $remote_addr; \
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; \
+        proxy_set_header X-Forwarded-Proto https; \
     } \
 }' > /etc/nginx/sites-available/default
 
