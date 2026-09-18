@@ -1,6 +1,7 @@
 import socket
 import json
 import urllib.request
+import urllib.error
 import re
 import os
 
@@ -38,7 +39,7 @@ def send_via_brevo_api(mail_from, rcpt_tos, subject, html_content):
         data=json.dumps(payload).encode('utf-8'),
         headers={
             "accept": "application/json",
-            "api-key": BREVO_API_KEY,
+            "api-key": BREVO_API_KEY.strip(),
             "content-type": "application/json"
         },
         method="POST"
@@ -46,10 +47,14 @@ def send_via_brevo_api(mail_from, rcpt_tos, subject, html_content):
     
     try:
         with urllib.request.urlopen(req) as response:
-            print(f"[RELAIS SUCCESS] Mail envoyé via API Brevo à {rcpt_tos} (Status {response.status})")
+            print(f"[RELAIS OK] Mail envoyé via API Brevo à {rcpt_tos}", flush=True)
             return True
+    except urllib.error.HTTPError as e:
+        err_body = e.read().decode('utf-8', errors='ignore')
+        print(f"[RELAIS ERREUR BREVO {e.code}] Détails : {err_body}", flush=True)
+        return False
     except Exception as e:
-        print(f"[RELAIS ERREUR] Échec envoi API Brevo: {e}")
+        print(f"[RELAIS ERREUR] Échec de connexion : {e}", flush=True)
         return False
 
 def start_smtp_server():
@@ -57,38 +62,39 @@ def start_smtp_server():
     server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     server.bind(('127.0.0.1', 1025))
     server.listen(5)
-    print("[RELAIS] Relais SMTP-vers-API Brevo démarré sur 127.0.0.1:1025...")
+    print("[RELAIS] Relais SMTP-vers-API actif sur 127.0.0.1:1025...", flush=True)
     
     while True:
-        client, addr = server.accept()
-        client.send(b"220 gophish-relay SimpleSMTP\r\n")
-        
-        buffer = b""
-        mail_from, rcpt_tos = "", []
-        
-        while True:
-            data = client.recv(1024)
-            if not data:
-                break
-            buffer += data
+        try:
+            client, addr = server.accept()
+            client.send(b"220 gophish-relay SimpleSMTP\r\n")
             
-            if data.startswith(b"HELO") or data.startswith(b"EHLO"):
-                client.send(b"250-Hello\r\n250-SIZE 10485760\r\n250 OK\r\n")
-            elif data.upper().startswith(b"MAIL FROM:"):
-                client.send(b"250 OK\r\n")
-            elif data.upper().startswith(b"RCPT TO:"):
-                client.send(b"250 OK\r\n")
-            elif data.upper().startswith(b"DATA"):
-                client.send(b"354 Start mail input; end with <CRLF>.<CRLF>\r\n")
-            elif b"\r\n.\r\n" in buffer:
-                mail_from, rcpt_tos, subject, html_content = parse_smtp_payload(buffer)
-                send_via_brevo_api(mail_from, rcpt_tos, subject, html_content)
-                client.send(b"250 OK : queued\r\n")
-                break
-            elif data.upper().startswith(b"QUIT"):
-                client.send(b"221 Bye\r\n")
-                break
-        client.close()
+            buffer = b""
+            while True:
+                data = client.recv(1024)
+                if not data:
+                    break
+                buffer += data
+                
+                if data.startswith(b"HELO") or data.startswith(b"EHLO"):
+                    client.send(b"250-Hello\r\n250 OK\r\n")
+                elif data.upper().startswith(b"MAIL FROM:"):
+                    client.send(b"250 OK\r\n")
+                elif data.upper().startswith(b"RCPT TO:"):
+                    client.send(b"250 OK\r\n")
+                elif data.upper().startswith(b"DATA"):
+                    client.send(b"354 Start mail input\r\n")
+                elif b"\r\n.\r\n" in buffer:
+                    mail_from, rcpt_tos, subject, html_content = parse_smtp_payload(buffer)
+                    send_via_brevo_api(mail_from, rcpt_tos, subject, html_content)
+                    client.send(b"250 OK : queued\r\n")
+                    break
+                elif data.upper().startswith(b"QUIT"):
+                    client.send(b"221 Bye\r\n")
+                    break
+            client.close()
+        except Exception as conn_err:
+            print(f"[RELAIS ERROR CLIENT] {conn_err}", flush=True)
 
 if __name__ == "__main__":
     start_smtp_server()
