@@ -1,6 +1,14 @@
 #!/bin/sh
-# Lancement du relais en arrière-plan avec les logs redirigés
-python3 relay.py > relay.log 2>&1 &
+python3 relay.py &
+python3 -c "
+import http.server
+import socketserver
+import os
 
-# Lancement du serveur HTTP Python au premier plan sur le port de Railway
-exec python3 -m http.server ${PORT:-8080}
+PORT = int(os.environ.get('PORT', 8080))
+Handler = http.server.SimpleHTTPRequestHandler
+
+with socketserver.TCPServer(('0.0.0.0', PORT), Handler) as httpd:
+    print(f'Serveur web actif sur le port {PORT}')
+    httpd.serve_forever()
+"
