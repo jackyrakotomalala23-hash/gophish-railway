@@ -1,3 +1,3 @@
 #!/bin/sh
 python3 relay.py &
-exec python3 -m http.server ${PORT:-8080}
+python3 -m http.server 0.0.0.0:${PORT:-8080}
