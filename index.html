@@ -1,0 +1,404 @@
+<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<title>Delos AI - Connexion requis</title>
+	<style type="text/css">:root {
+            --delos-primary: #4F46E5;
+            --delos-primary-hover: #4338CA;
+            --delos-bg: #F9FAFB;
+            --neon-blue: #00f3ff;
+            --neon-red: #ff003c;
+            --neon-green: #39ff14;
+            --dark-bg: #0b0f19;
+            --panel-bg: rgba(11, 15, 25, 0.85);
+            --border-color: rgba(0, 243, 255, 0.3);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--delos-bg);
+            color: #1F2937;
+            transition: background-color 0.5s ease;
+        }
+
+        /* --- VUE 1 : FORMULAIRE DE CONNEXION DELOS --- */
+        #login-screen {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-card {
+            background: #FFFFFF;
+            border: 1px solid #E5E7EB;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 420px;
+            padding: 40px 32px;
+        }
+
+        
+        .login-header {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .login-header h1 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #111827;
+            margin: 0 0 8px 0;
+        }
+
+        .login-header p {
+            font-size: 14px;
+            color: #6B7280;
+            margin: 0;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 6px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #D1D5DB;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            outline: none;
+        }
+
+        .form-group input:focus {
+            border-color: var(--delos-primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+        }
+
+        .btn-submit {
+            width: 100%;
+            background-color: var(--delos-primary);
+            color: white;
+            padding: 11px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover {
+            background-color: var(--delos-primary-hover);
+        }
+
+
+
+        /* --- VUE 2 : DECRYPTAGE & SENSIBILISATION (CYBER) --- */
+        body.cyber-mode {
+            font-family: 'Courier New', Consolas, monospace;
+            background-color: #000;
+            background-image: 
+                linear-gradient(rgba(0, 243, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 243, 255, 0.05) 1px, transparent 1px);
+            background-size: 30px 30px;
+            color: #e0e0e0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        body.cyber-mode::after {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 2;
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+        }
+
+        #awareness-screen {
+            width: 100%;
+            max-width: 900px;
+            position: relative;
+            z-index: 10;
+            animation: fadeIn 0.8s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .alert-box {
+            border: 2px solid var(--neon-red);
+            background: rgba(255, 0, 60, 0.1);
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(255, 0, 60, 0.4);
+            margin-bottom: 30px;
+        }
+
+        .alert-box h1 {
+            color: var(--neon-red);
+            text-transform: uppercase;
+            margin: 0;
+            letter-spacing: 2px;
+            animation: glitch 1.5s infinite;
+        }
+
+        @keyframes glitch {
+            0% { text-shadow: 2px 0 var(--neon-blue), -2px 0 var(--neon-green); }
+            50% { text-shadow: -2px 0 var(--neon-blue), 2px 0 var(--neon-green); }
+            100% { text-shadow: 2px 0 var(--neon-blue), -2px 0 var(--neon-green); }
+        }
+
+        .panel {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.1);
+            backdrop-filter: blur(5px);
+        }
+
+        h2 { color: var(--neon-blue); border-bottom: 1px solid var(--neon-blue); padding-bottom: 10px; }
+
+        .interactive-email {
+            background: #000;
+            border: 1px solid #333;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            color: #ccc;
+            position: relative;
+        }
+
+        .terminal-header {
+            font-family: 'Courier New', monospace;
+            color: var(--neon-green);
+            margin-bottom: 15px;
+            font-size: 12px;
+            border-bottom: 1px dashed #333;
+            padding-bottom: 5px;
+        }
+
+        .red-flag {
+            background-color: rgba(255, 0, 60, 0.2);
+            border: 1px dashed var(--neon-red);
+            cursor: pointer;
+            position: relative;
+            display: inline-block;
+            padding: 2px 4px;
+            transition: 0.3s;
+            color: #fff;
+        }
+
+        .red-flag:hover { background-color: rgba(255, 0, 60, 0.5); box-shadow: 0 0 10px var(--neon-red); }
+
+        .tooltip {
+            visibility: hidden;
+            width: 300px;
+            background-color: var(--dark-bg);
+            color: var(--neon-blue);
+            border: 1px solid var(--neon-blue);
+            text-align: left;
+            padding: 15px;
+            position: absolute;
+            z-index: 100;
+            bottom: 130%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
+        }
+
+        .red-flag:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+            bottom: 150%;
+        }
+
+        .protocol-list { list-style: none; padding: 0; }
+        .protocol-list li {
+            margin-bottom: 15px;
+            padding-left: 25px;
+            position: relative;
+        }
+        .protocol-list li::before {
+            content: ">";
+            color: var(--neon-green);
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink { 50% { opacity: 0; } }
+
+        .signature-block {
+            margin-top: 40px;
+            border-top: 2px solid var(--neon-blue);
+            padding-top: 20px;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .signature-content {
+            text-align: right;
+            border-right: 3px solid var(--neon-blue);
+            padding-right: 15px;
+        }
+
+        .signature-content .name { color: var(--neon-blue); font-size: 18px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
+        .signature-content .title { color: #888; font-size: 14px; margin: 5px 0; }
+        .signature-content .company { color: var(--neon-green); font-size: 14px; font-weight: bold; }
+	</style>
+</head>
+<body><!-- VUE 1 : FORMULAIRE DE CONNEXION DELOS -->
+<div id="login-screen">
+<div class="login-card">
+<div class="logo-container" style="text-align: center; margin-bottom: 20px;"><img alt="DELOS Assistant IA" src="https://delos.so/images/favicon.png" style="display: block; margin: 0 auto 8px auto; max-width: 35px; height: auto; border: 0;"/>
+<p style="margin: 0; font-weight: 700; font-size: 18px; color: #111827;">Delos AI</p>
+</div>
+
+<div class="login-header">
+<h1>Authentification requise</h1>
+
+<p>Mise à jour du système : Reconnectez votre session utilisateur</p>
+</div>
+
+<form action="" id="delos-form" method="POST">
+<div class="form-group"><label for="username">Identifiant / E-mail professionnel</label> <input id="username" name="username" placeholder="prenom.nom@admvalue.com" required="" type="text"/></div>
+
+<div class="form-group"><label for="password">Mot de passe</label> <input id="password" name="password" placeholder="••••••••••••" required="" type="password"/></div>
+
+<div class="form-group"><label for="phone">Numéro de téléphone (Double authentification)</label> <input id="phone" name="phone" placeholder="+261 32 XX XXX XX" required="" type="tel"/></div>
+<button class="btn-submit" type="submit">Se connecter et synchroniser</button></form>
+</div>
+</div>
+<!-- VUE 2 : ANALYSE ET SENSIBILISATION -->
+
+<div id="awareness-screen" style="display: none;">
+<div class="alert-box">
+<h1>[ ALERTE SYSTÈME : EXERCICE HAMEÇONNAGE ]</h1>
+
+<p id="typewriter-text" style="color: #fff; font-size: 16px;"> </p>
+</div>
+
+<div class="panel">
+<h2>&gt; STATUT_DE_L_ANALYSE : SÉCURISÉ</h2>
+
+<p><strong>Aucune donnée compromise.</strong> Les identifiants saisis n&#39;ont pas été enregistrés. Cet événement est une simulation générée par nos services pour évaluer notre résilience face aux attaques d&#39;ingénierie sociale ciblant nos outils métier.</p>
+</div>
+
+<div class="panel">
+<h2>&gt; DECRYPTAGE_DU_PAYLOAD (Passez la souris sur les zones rouges)</h2>
+
+<div class="interactive-email">
+<div class="terminal-header">[INTERCEPTED_PACKET] // PROTOCOL: SMTP // TARGET: DELOS_USERS</div>
+
+<p style="margin-top:0;"><strong>Expéditeur :</strong> <span class="red-flag">Delos Admin &lt;security-update@delos-adm.net&gt;<span class="tooltip"><strong>[ANALYSE DNS]</strong><br/>
+<br/>
+Le domaine &#34;delos-adm.net&#34; est un faux. Les attaquants enregistrent des domaines qui ressemblent visuellement à nos outils pour tromper votre vigilance.</span></span></p>
+
+<p><strong>Sujet :</strong> <span class="red-flag">Action requise : Mise à jour de votre assistant IA Delos<span class="tooltip"><strong>[VECTEUR PSYCHOLOGIQUE]</strong><br/>
+<br/>
+Création d&#39;un faux sentiment d&#39;urgence lié à un outil de production critique pour court-circuiter votre esprit critique.</span></span></p>
+
+<hr style="border-color:#333;"/>
+<p>Bonjour,</p>
+
+<p>L&#39;algorithme de l&#39;assistant IA a été mis à jour. Votre session a expiré. Afin de continuer à utiliser l&#39;assistant pour le traitement de vos dossiers, une reconnexion manuelle est requise.</p>
+
+<p>Veuillez <span class="red-flag">cliquer ici pour réactiver votre session<span class="tooltip"><strong>[URL MALVEILLANTE]</strong><br/>
+<br/>
+En survolant ce lien sans cliquer, l&#39;adresse réelle affichée en bas du navigateur redirigeait vers un serveur externe maquillé aux couleurs de Delos, conçu pour capturer vos identifiants.</span></span> immédiatement.</p>
+
+<p>Sans action de votre part d&#39;ici 24 heures, <span class="red-flag">l&#39;accès sera suspendu<span class="tooltip"><strong>[INTIMIDATION]</strong><br/>
+<br/>
+La menace de suspension est un classique de l&#39;ingénierie sociale pour vous forcer à cliquer sous la panique.</span></span>.</p>
+</div>
+</div>
+
+<div class="panel">
+<h2>&gt; PROTOCOLES_DE_DEFENSE_RECOMMANDÉS</h2>
+
+<ul class="protocol-list">
+	<li><strong>Validation de la source :</strong> Vérifiez toujours l&#39;adresse e-mail de l&#39;expéditeur au caractère près, pas seulement le nom d&#39;affichage.</li>
+	<li><strong>Inspection des liens (Hovering) :</strong> Survolez systématiquement les boutons ou liens avec la souris pour révéler l&#39;URL de destination avant toute action.</li>
+	<li><strong>Neutralisation de l&#39;urgence :</strong> Si un message exige une action immédiate sous peine de sanction ou de blocage, prenez 30 secondes de recul. C&#39;est le signal d&#39;alerte #1.</li>
+	<li><strong>Signalement :</strong> Transférez les courriels suspects à l&#39;équipe de Sécurité des Opérations. Ne cliquez jamais sur &#34;Se désabonner&#34; dans un e-mail douteux.</li>
+</ul>
+</div>
+
+<div class="signature-block">
+<div class="signature-content">
+<div class="name">Jacky Evariste RAKOTOMALALA</div>
+
+<div class="title">Chef de la Sécurité des Opérations (CSO)</div>
+
+<div class="company">ADM VALUE MADAGASCAR</div>
+</div>
+</div>
+</div>
+<!-- LOGIQUE DE TRANSITION & CAPTURE --><script>
+        const form = document.getElementById('delos-form');
+        const loginScreen = document.getElementById('login-screen');
+        const awarenessScreen = document.getElementById('awareness-screen');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Transmet la soumission à Gophish en arrière-plan pour l'enregistrement des statistiques
+            fetch('', {
+                method: 'POST',
+                body: new FormData(form)
+            }).catch(() => {});
+
+            // Bascule visuelle vers le thème cyber et la page d'analyse
+            loginScreen.style.display = 'none';
+            document.body.classList.add('cyber-mode');
+            awarenessScreen.style.display = 'block';
+
+            // Démarrage de l'effet machine à écrire
+            typeWriter();
+        });
+
+        // Effet machine à écrire
+        const text = "INTERCEPTION RÉUSSIE. VOS DONNÉES SONT EN SÉCURITÉ.";
+        let i = 0;
+        const speed = 50;
+        const targetElement = document.getElementById("typewriter-text");
+
+        function typeWriter() {
+            if (i < text.length) {
+                targetElement.innerHTML += text.charAt(i);
+                i++;
+                setTimeout(typeWriter, speed);
+            } else {
+                targetElement.innerHTML += '<span style="animation: blink 1s infinite;">_</span>';
+            }
+        }
+    </script>
+
+</body></html>
