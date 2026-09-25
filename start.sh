@@ -1,4 +1,3 @@
 #!/bin/sh
 python3 relay.py &
-sleep 1
-./gophish
+python3 -m http.server 8080
